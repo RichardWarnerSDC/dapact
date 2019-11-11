@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane id="root"
+    xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/11.0.1"
+    maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+    alignment="center" hgap="10" vgap="10"
+    fx:controller="offlineads.JobSelectController"
+    styleClass="jobSelectPane">
+        
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="16.6" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="16.6" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="16.6" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="16.6" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="16.6" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="16.6" prefWidth="100.0"/>
+    </columnConstraints>
+    
+    <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES" minHeight="33.3" prefHeight="100.0"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="33.3" prefHeight="100.0"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="33.3" prefHeight="100.0"/>  
+    </rowConstraints>
+    
+    <children>
+            	    
+	    <Text text="Analogue and Digital Ads Capture Tool"
+	        id="txtTitleText"
+	        textAlignment="CENTER"
+	        GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="6" GridPane.halignment="CENTER"/>
+	        
+	    <Label text="New Pages: 0"
+            id="lblNewPagesLabel"
+	        textAlignment="CENTER"
+	        GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER"/>
+	        
+	    <Label text="New Ads: 0"
+            id="lblNewAdsLabel"
+	        textAlignment="CENTER"
+	        GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER"/>
+	        
+	    <Button text="Cut Ads"
+            id="btnCutAdsButton"
+            onAction="#btnCutAdsButton_Click"
+            minWidth="240" minHeight="120"
+	        textAlignment="CENTER"
+	        GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+	        
+	    <Button text="Enter Ads"
+            id="btnEnterAdsButton"
+            onAction="#btnEnterAdsButton_Click"
+            minWidth="240" minHeight="120"
+	        textAlignment="CENTER"
+	        GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+	
+	    <Button text="Edit Ads"
+            id="btnEditAdsButton"
+            onAction="#btnEditAdsButton_Click"
+            minWidth="240" minHeight="120"
+	        textAlignment="CENTER"
+	        GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+            
+           
+        <Button text="Test"
+            id="btnTestButton"
+		    onAction="#btnTestButton_Click"
+		    textAlignment="CENTER"
+	    GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+	    
+    </children>
+     
+    <stylesheets>
+        <URL value="@JobSelectPane.css"/>
+    </stylesheets>
+        
+</GridPane>

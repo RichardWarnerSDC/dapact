@@ -96,7 +96,7 @@
   				</execution>
   			</executions>
   			<configuration>
-  				<mainClass>guijavafx.View</mainClass>
+  				<mainClass>guijavafx.App</mainClass>
   			</configuration>
   		</plugin>
   	</plugins>

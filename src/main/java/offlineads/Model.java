@@ -1,13 +1,17 @@
 package offlineads;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 
 public class Model {
 	
+	private File newPdfFilesDirectory = new File("res/NewPublications");
+	private File[] newPdfFiles = newPdfFilesDirectory.listFiles();
 	private File newImagesDirectory = new File("res/NewOfflineAds");
 	private File[] newImageFiles = newImagesDirectory.listFiles();
-	private ArrayList<Integer> sizeTest;
 	
 	/**
 	 * Test main method for quick model testing.
@@ -15,18 +19,31 @@ public class Model {
 	 */
 	public static void main(String[] args) {
 		Model model = new Model();
-		System.out.println(model.newImagesDirectory.toString());
-		System.out.println(model.newImageFiles[0].toString());
-		model.sizeTest = new ArrayList<Integer>();
-		for (int i = 0; i < 10; i++) {
-			model.sizeTest.add(i);
-		}
-		System.out.println(model.sizeTest.size());
-
+		model.preparePdfs();
 	}
 	
 	public Model() {
-		
+
+	}
+	
+	/**
+	 * Load all pdf files and convert to jpegs.
+	 */
+	public synchronized void preparePdfs() {
+		for (File pdfFile : newPdfFiles) {
+			// check no project folder exists for current pdf
+			if (new File(FileHandler.dropExtension(pdfFile)).exists()) {
+				System.out.println("File already converted: " + pdfFile.toString());
+				// skip converting already converted pdf
+				continue;
+			} else {
+				PDFHandler.convertDocPagesToJPEG(pdfFile);
+			}
+		}
+	}
+	
+	public File[] getNewPdfFiles() {
+		return newPdfFiles;
 	}
 	
 	public File[] getNewOfflineAds() {

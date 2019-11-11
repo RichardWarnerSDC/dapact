@@ -18,7 +18,6 @@ import javafx.geometry.VPos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
-
 /**
  *
  * @author akouznet
