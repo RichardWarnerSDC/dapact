@@ -33,8 +33,7 @@
     
     <children>
             	    
-	    <Text text="Analogue and Digital Ads Capture Tool"
-	        id="txtTitleText"
+	    <Text fx:id="txtTitleText"
 	        textAlignment="CENTER"
 	        GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="6" GridPane.halignment="CENTER"/>
 	        

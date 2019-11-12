@@ -28,6 +28,7 @@ public class App extends Application {
 
 	private Model model;
 	private Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+	private String strTitle = "Digital and Printed Ads Capture Tool (DaPact)";
 	private Stage primaryStage;
 	private Scene jobSelectScene;
 	private Scene PublicationSelectScene; 
@@ -50,12 +51,13 @@ public class App extends Application {
 			this.primaryStage = primaryStage;
 			
 			createJobSelectScene();
+			jobSelectController.setTxtTitleText(strTitle);
 			
 			createPublicationSelectScene();
 						
 			createTestScene();
 	
-			primaryStage.setTitle("Analogue and Digital Ads Capture Tool");
+			primaryStage.setTitle(strTitle);
 			primaryStage.setWidth(primaryScreenBounds.getWidth());
 			primaryStage.setHeight(primaryScreenBounds.getHeight());
 			primaryStage.setMaximized(true);
@@ -88,8 +90,8 @@ public class App extends Application {
 		sPane.setFitToHeight(true);
 		BorderPane bPane = new BorderPane();
 		int i = 1;
-		for (File imageFile : model.getNewOfflineAds()) {
-			ImageView imgVw = new ImageView(new Image("file:" + model.getNewOfflineAds()[i-1].toString()));
+		for (File imageFile : model.getNewAdsImages()) {
+			ImageView imgVw = new ImageView(new Image("file:" + model.getNewAdsImages()[i-1].toString()));
 			imgVw.setPreserveRatio(true);
 			imgVw.setFitWidth(480);
 			gp.add(imgVw, i, 1);

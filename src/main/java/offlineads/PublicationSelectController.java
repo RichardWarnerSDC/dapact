@@ -51,7 +51,7 @@ public class PublicationSelectController implements Initializable {
 	}
 	
 	public void createPublicationPreviews() {
-		ObservableList<Image> frontPageImages = PDFHandler.getFrontPageImages(app.getModel().getNewPdfFiles());
+		ObservableList<Image> frontPageImages = PDFHandler.getFrontPageImages(app.getModel().getNewPublicationsFiles());
 		for (int i = 0; i < frontPageImages.size(); i++) {
 			int imgVwPubImageNum = i;
 			ImageView imgVwPubImage = new ImageView(frontPageImages.get(i));

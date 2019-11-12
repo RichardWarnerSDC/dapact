@@ -5,13 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 
 public class Model {
 	
-	private File newPdfFilesDirectory = new File("res/NewPublications");
-	private File[] newPdfFiles = newPdfFilesDirectory.listFiles();
-	private File newImagesDirectory = new File("res/NewOfflineAds");
-	private File[] newImageFiles = newImagesDirectory.listFiles();
+	private File resources = new File("res");
+	private File newPublicationsFilesDirectory = new File(resources + "/NewPublications");
+	private File[] newPublicationsFiles = newPublicationsFilesDirectory.listFiles();
+	private File processedPublicationsDirectory = new File(resources + "/ProcessedPublications");
+	private File[] processedPublicationsFiles = processedPublicationsDirectory.listFiles();
+	private File newAdsImagesDirectory = new File(resources + "/NewAdsImages");
+	private File[] newAdsImagesFiles = newAdsImagesDirectory.listFiles();
 	
 	/**
 	 * Test main method for quick model testing.
@@ -19,6 +23,7 @@ public class Model {
 	 */
 	public static void main(String[] args) {
 		Model model = new Model();
+		model.initialiseResources();
 		model.preparePdfs();
 	}
 	
@@ -27,27 +32,34 @@ public class Model {
 	}
 	
 	/**
-	 * Load all pdf files and convert to jpegs.
+	 * If folders don't exist, create them, e.g. first run
+	 */
+	public void initialiseResources() {
+		if (!resources.exists()) {new File("res").mkdir();}
+		if (!newPublicationsFilesDirectory.exists()) {FileHandler.makeDirFromFile(newPublicationsFilesDirectory);}
+		if (!processedPublicationsDirectory.exists()) {FileHandler.makeDirFromFile(processedPublicationsDirectory);}
+		if (!newAdsImagesDirectory.exists()) {FileHandler.makeDirFromFile(newAdsImagesDirectory);}
+	}
+	
+	/**
+	 * convert new PDF files to JPEGs and store in ProcessedPublications directory.
 	 */
 	public synchronized void preparePdfs() {
-		for (File pdfFile : newPdfFiles) {
-			// check no project folder exists for current pdf
-			if (new File(FileHandler.dropExtension(pdfFile)).exists()) {
-				System.out.println("File already converted: " + pdfFile.toString());
-				// skip converting already converted pdf
-				continue;
-			} else {
-				PDFHandler.convertDocPagesToJPEG(pdfFile);
-			}
+		for (File file : newPublicationsFiles) {
+			PDFHandler.convertDocPagesToJPEG(file, processedPublicationsDirectory);
 		}
 	}
 	
-	public File[] getNewPdfFiles() {
-		return newPdfFiles;
+	public File[] getNewPublicationsFiles() {
+		return newPublicationsFiles;
 	}
 	
-	public File[] getNewOfflineAds() {
-		return newImageFiles;
+	public File[] getProcessedPublicationsFiles() {
+		return processedPublicationsFiles;
+	}
+	
+	public File[] getNewAdsImages() {
+		return newAdsImagesFiles;
 	}
 	
 }

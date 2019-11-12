@@ -2,10 +2,12 @@ package offlineads;
 
 import guijavafx.App;
 import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 
 public class JobSelectController {
 	
 	private boolean isCreated;
+	@FXML private Text txtTitleText;
 	App app;
 	
 	/**
@@ -33,6 +35,10 @@ public class JobSelectController {
 	
 	public boolean getIsCreated() {
 		return isCreated;
+	}
+	
+	public void setTxtTitleText(String newText) {
+		this.txtTitleText.setText(newText);
 	}
 	
 	public void setApp(App app) {

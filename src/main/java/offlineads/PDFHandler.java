@@ -39,19 +39,20 @@ public class PDFHandler {
 //		convertDocPagesToJPEG(0);
 	}
 		
-	public static void convertDocPagesToJPEG(File pdfFile) {
+	public static void convertDocPagesToJPEG(File pdfFile, File processedPubsDir) {
+		// check no project folder exists in output directory for current pdf
 		try {
 			openPDF(pdfFile);
 			createPdfRenderer();
+			
+			String outputDirString = processedPubsDir + "/" + pdfFile.getName();
+			FileHandler.makeDirFromFile(new File(outputDirString));
 			int pageNum = 0;
-			
-			// Create the directory to store the output image files.
-			String strOutputFolder = FileHandler.dropExtension(pdfFile);
-			
 			// iterate over pages converting each page to jpeg
 			for (PDPage page : pdDoc.getPages()) {
+				String outputFileString = "/Page" + pageNum + ".jpeg";
 				renderPage(pdfRenderer, pageNum, METRO_DPI);
-				ImageIOUtil.writeImage(currBuffImage, strOutputFolder + "/" + pageNum + ".jpeg", (int) METRO_DPI);
+				ImageIOUtil.writeImage(currBuffImage, outputDirString + outputFileString, (int) METRO_DPI);
 				pageNum++;
 			}
 		} catch (Exception e) {
