@@ -8,19 +8,19 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import guijavafx.ImageViewPane?>
 
 <BorderPane fx:id="root" 
-    xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/11.0.1"
-    fx:controller="offlineads.PublicationSelectController"
-    styleClass="PublicationSelectPane">
+    xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+    fx:controller="offlineads.CutAdsController"
+    styleClass="cutAdsPane">
 	    
     <stylesheets>
-        <URL value="@PublicationSelectPane.css" />
+        <URL value="@CutAdsPane.css" />
     </stylesheets>
     
     <top>
@@ -34,7 +34,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
                 <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Publication" GridPane.rowSpan="2">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cut Ads" GridPane.rowSpan="2">
                         <font>
                             <Font size="26.0" />
                         </font>
@@ -46,25 +46,12 @@
         </GridPane>
     </top>
     
-    <center>
+    <left>
 
-    </center>
+    </left>
 
 	<bottom>
-	    <FlowPane hgap="8.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="8.0" BorderPane.alignment="CENTER">
-	        <children>
-	            <Label text="Highlighted File: Metro" />
-	            <Label text="Origin: metro.co.uk" />
-	            <Label text="Publication: Metro" />
-	            <Label text="Location: London" />
-	            <Label text="Pages: 101" />
-	            <Label text="Tagged Ads: 0" />
-	            <Label text="Cut Ads: 0" />
-	        </children>
-	            <padding>
-	                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-	            </padding>
-	    </FlowPane>
+
 	</bottom>
         
 </BorderPane>

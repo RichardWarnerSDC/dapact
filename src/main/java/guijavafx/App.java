@@ -21,6 +21,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import offlineads.PublicationSelectController;
+import offlineads.CutAdsController;
 import offlineads.JobSelectController;
 import offlineads.Model;
 
@@ -32,8 +33,10 @@ public class App extends Application {
 	private Stage primaryStage;
 	private Scene jobSelectScene;
 	private Scene PublicationSelectScene; 
+	private Scene[] cutAdsScenes;
 	private JobSelectController jobSelectController;
 	private PublicationSelectController PublicationSelectController;
+	private CutAdsController[] cutAdsControllers;
 	
 	private Scene testScene;
 	
@@ -51,12 +54,13 @@ public class App extends Application {
 			this.primaryStage = primaryStage;
 			
 			createJobSelectScene();
-			jobSelectController.setTxtTitleText(strTitle);
+			
+			createCutAdsScenes();
 			
 			createPublicationSelectScene();
-						
+			
 			createTestScene();
-	
+			
 			primaryStage.setTitle(strTitle);
 			primaryStage.setWidth(primaryScreenBounds.getWidth());
 			primaryStage.setHeight(primaryScreenBounds.getHeight());
@@ -70,17 +74,34 @@ public class App extends Application {
 		FXMLLoader jobSelectFXMLLoader = new FXMLLoader(getClass().getResource("/guijavafx/job_select_pane.fxml"));
 		Parent jobSelectPane = jobSelectFXMLLoader.load();
 		this.jobSelectController = (JobSelectController) jobSelectFXMLLoader.getController();
+		jobSelectController.setTxtTitleText(strTitle);
 		jobSelectController.setApp(this);
 		jobSelectScene = new Scene(jobSelectPane);
 	}
 	
 	public void createPublicationSelectScene() throws IOException {
-		FXMLLoader PublicationSelectFXMLLoader = new FXMLLoader(getClass().getResource("/guijavafx/publication_select_pane.fxml"));
-		Parent PublicationSelectPane = PublicationSelectFXMLLoader.load();
-		this.PublicationSelectController = (PublicationSelectController) PublicationSelectFXMLLoader.getController();
+		FXMLLoader publicationSelectFXMLLoader = new FXMLLoader(getClass().getResource("/guijavafx/publication_select_pane.fxml"));
+		Parent publicationSelectPane = publicationSelectFXMLLoader.load();
+		this.PublicationSelectController = (PublicationSelectController) publicationSelectFXMLLoader.getController();
 		PublicationSelectController.setApp(this);
-		PublicationSelectScene = new Scene(PublicationSelectPane);
+		PublicationSelectScene = new Scene(publicationSelectPane);
 		PublicationSelectController.createPublicationPreviews();
+	}
+	
+	public void createCutAdsScenes() throws IOException {
+		cutAdsScenes = new Scene[model.getFilesNewPubs().length];
+		cutAdsControllers = new CutAdsController[model.getFilesNewPubs().length];
+		for (int i = 0; i < cutAdsScenes.length - 1; i++) {
+			if (cutAdsScenes[i] == null) {
+				FXMLLoader cutAdsFXMLLoader = new FXMLLoader(getClass().getResource("/guijavafx/cut_ads_pane.fxml"));
+				Parent cutAdsPane = cutAdsFXMLLoader.load();
+				this.cutAdsControllers[i] = (CutAdsController) cutAdsFXMLLoader.getController();
+				cutAdsScenes[i] = new Scene(cutAdsPane);
+				cutAdsControllers[i].setCutAdsScenesID(i);
+				cutAdsControllers[i].setApp(this);
+				cutAdsControllers[i].createPagePreviews();
+			}
+		}
 	}
 	
 	public void createTestScene() {
@@ -90,8 +111,8 @@ public class App extends Application {
 		sPane.setFitToHeight(true);
 		BorderPane bPane = new BorderPane();
 		int i = 1;
-		for (File imageFile : model.getNewAdsImages()) {
-			ImageView imgVw = new ImageView(new Image("file:" + model.getNewAdsImages()[i-1].toString()));
+		for (File imageFile : model.getFilesNewAdsImages()) {
+			ImageView imgVw = new ImageView(new Image("file:" + model.getFilesNewAdsImages()[i-1].toString()));
 			imgVw.setPreserveRatio(true);
 			imgVw.setFitWidth(480);
 			gp.add(imgVw, i, 1);
@@ -144,6 +165,14 @@ public class App extends Application {
 	
 	public PublicationSelectController getPublicationSelectController() {
 		return PublicationSelectController;
+	}
+	
+	public Scene[] getCutAdsScenes() {
+		return cutAdsScenes;
+	}
+	
+	public CutAdsController[] getCutAdsControllers() {
+		return cutAdsControllers;
 	}
 	
 	public Scene getTestScene() {

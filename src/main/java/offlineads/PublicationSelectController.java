@@ -2,6 +2,7 @@ package offlineads;
 
 import guijavafx.App;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -28,13 +29,11 @@ import javafx.stage.Stage;
 public class PublicationSelectController implements Initializable {
 		
 	private boolean isCreated;
-	private Stage primaryStage;
-	private Scene jobSelectScene;
 	@FXML private BorderPane root;
 	private ScrollPane spPubScroller;
 	private HBox hBoxPubImages;
 	private ObservableList<ImageView> olPubImages = FXCollections.observableArrayList();
-	private int currentlySelectedImage;
+	private int currentlySelectedPublication;
 	ColorAdjust gsImage = new ColorAdjust();
 	private App app;
 	
@@ -51,18 +50,20 @@ public class PublicationSelectController implements Initializable {
 	}
 	
 	public void createPublicationPreviews() {
-		ObservableList<Image> frontPageImages = PDFHandler.getFrontPageImages(app.getModel().getNewPublicationsFiles());
-		for (int i = 0; i < frontPageImages.size(); i++) {
-			int imgVwPubImageNum = i;
-			ImageView imgVwPubImage = new ImageView(frontPageImages.get(i));
-			imgVwPubImage.setId("imgVwPubImage" + Integer.toString(i));
+		File[] NewPubsImages = app.getModel().getFilesNewPubsImages();
+		int numPub = 0;
+		for (File convertedPub : NewPubsImages) {
+			int pubNum = numPub;
+			ImageView imgVwPubImage = new ImageView("file:" + convertedPub.listFiles()[0]);
 			imgVwPubImage.setEffect(gsImage);
-			imgVwPubImage.setOnMouseClicked(e -> imgVwPubImage_Clicked(e, imgVwPubImageNum));
+			imgVwPubImage.setOnMouseClicked(e -> imgVwPubImage_Clicked(e, pubNum));
 			imgVwPubImage.setPreserveRatio(true);
 			imgVwPubImage.setFitWidth(320);
 			olPubImages.add(imgVwPubImage);
 			hBoxPubImages.getChildren().add(imgVwPubImage);
+			numPub++;
 		}
+
 		spPubScroller.setContent(hBoxPubImages);
 		root.setCenter(spPubScroller);
 	}
@@ -78,17 +79,14 @@ public class PublicationSelectController implements Initializable {
 		if (e.getClickCount() == 2) {
 			// double clicked
 			// open?
+			app.getPrimaryStage().setScene(app.getCutAdsScenes()[i]);
 			e.consume();
 		} else {
 			// single click
-			olPubImages.get(currentlySelectedImage).setEffect(gsImage);
+			olPubImages.get(currentlySelectedPublication).setEffect(gsImage);
 			olPubImages.get(i).setEffect(null);
-			currentlySelectedImage = i;
+			currentlySelectedPublication = i;
 		}
-	}
-	
-	@FXML protected void btnBackButton_Click() {
-		primaryStage.setScene(jobSelectScene);
 	}
 	
 	public ObservableList<ImageView> getOlPubImages() {

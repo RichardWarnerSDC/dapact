@@ -40,26 +40,28 @@ public class PDFHandler {
 	}
 		
 	public static void convertDocPagesToJPEG(File pdfFile, File processedPubsDir) {
+		String outputDirString = processedPubsDir + "/" + pdfFile.getName();
 		// check no project folder exists in output directory for current pdf
-		try {
-			openPDF(pdfFile);
-			createPdfRenderer();
-			
-			String outputDirString = processedPubsDir + "/" + pdfFile.getName();
-			FileHandler.makeDirFromFile(new File(outputDirString));
-			int pageNum = 0;
-			// iterate over pages converting each page to jpeg
-			for (PDPage page : pdDoc.getPages()) {
-				String outputFileString = "/Page" + pageNum + ".jpeg";
-				renderPage(pdfRenderer, pageNum, METRO_DPI);
-				ImageIOUtil.writeImage(currBuffImage, outputDirString + outputFileString, (int) METRO_DPI);
-				pageNum++;
+		if (!new File(outputDirString).exists()) {
+			try {
+				openPDF(pdfFile);
+				createPdfRenderer();
+				
+				FileHandler.makeDirFromFile(new File(outputDirString));
+				int pageNum = 0;
+				// iterate over pages converting each page to jpeg
+				for (PDPage page : pdDoc.getPages()) {
+					String outputFileString = "/Page" + pageNum + ".jpeg";
+					renderPage(pdfRenderer, pageNum, METRO_DPI);
+					ImageIOUtil.writeImage(currBuffImage, outputDirString + outputFileString, (int) METRO_DPI);
+					pageNum++;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Failed converting document to JPEG: " + pdfFile.toString());
+			} finally {
+				closePDF();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Failed converting document to JPEG: " + pdfFile.toString());
-		} finally {
-			closePDF();
 		}
 	}
 	
@@ -73,6 +75,7 @@ public class PDFHandler {
 		ObservableList<Image> images = FXCollections.observableArrayList();
 		for (File file : pdfFilesRoot) {
 			if (file.isDirectory()) {
+				System.out.println("Imaging");
 				String strFilename = file.listFiles()[0].toString();
 				Image image = new Image("file:" + strFilename);
 				images.add(image);

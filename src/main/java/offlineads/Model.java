@@ -10,12 +10,12 @@ import java.nio.file.Files;
 public class Model {
 	
 	private File resources = new File("res");
-	private File newPublicationsFilesDirectory = new File(resources + "/NewPublications");
-	private File[] newPublicationsFiles = newPublicationsFilesDirectory.listFiles();
-	private File processedPublicationsDirectory = new File(resources + "/ProcessedPublications");
-	private File[] processedPublicationsFiles = processedPublicationsDirectory.listFiles();
-	private File newAdsImagesDirectory = new File(resources + "/NewAdsImages");
-	private File[] newAdsImagesFiles = newAdsImagesDirectory.listFiles();
+	private File dirNewPubs = new File(resources + "/NewPublications");
+	private File[] filesNewPubs = dirNewPubs.listFiles();
+	private File dirNewPubsImages = new File(resources + "/NewPublicationsImages");
+	private File[] filesNewPubsImages = dirNewPubsImages.listFiles();
+	private File dirNewAdsImages = new File(resources + "/NewAdsImages");
+	private File[] filesNewAdsImages = dirNewAdsImages.listFiles();
 	
 	/**
 	 * Test main method for quick model testing.
@@ -36,30 +36,30 @@ public class Model {
 	 */
 	public void initialiseResources() {
 		if (!resources.exists()) {new File("res").mkdir();}
-		if (!newPublicationsFilesDirectory.exists()) {FileHandler.makeDirFromFile(newPublicationsFilesDirectory);}
-		if (!processedPublicationsDirectory.exists()) {FileHandler.makeDirFromFile(processedPublicationsDirectory);}
-		if (!newAdsImagesDirectory.exists()) {FileHandler.makeDirFromFile(newAdsImagesDirectory);}
+		if (!dirNewPubs.exists()) {FileHandler.makeDirFromFile(dirNewPubs);}
+		if (!dirNewPubsImages.exists()) {FileHandler.makeDirFromFile(dirNewPubsImages);}
+		if (!dirNewAdsImages.exists()) {FileHandler.makeDirFromFile(dirNewAdsImages);}
 	}
 	
 	/**
 	 * convert new PDF files to JPEGs and store in ProcessedPublications directory.
 	 */
 	public synchronized void preparePdfs() {
-		for (File file : newPublicationsFiles) {
-			PDFHandler.convertDocPagesToJPEG(file, processedPublicationsDirectory);
+		for (File file : filesNewPubs) {
+			PDFHandler.convertDocPagesToJPEG(file, dirNewPubsImages);
 		}
 	}
 	
-	public File[] getNewPublicationsFiles() {
-		return newPublicationsFiles;
+	public File[] getFilesNewPubs() {
+		return filesNewPubs;
 	}
 	
-	public File[] getProcessedPublicationsFiles() {
-		return processedPublicationsFiles;
+	public File[] getFilesNewPubsImages() {
+		return filesNewPubsImages;
 	}
 	
-	public File[] getNewAdsImages() {
-		return newAdsImagesFiles;
+	public File[] getFilesNewAdsImages() {
+		return filesNewAdsImages;
 	}
 	
 }
