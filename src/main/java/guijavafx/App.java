@@ -1,9 +1,9 @@
 package guijavafx;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
+import data.Model;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -12,34 +12,29 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import offlineads.PublicationSelectController;
 import offlineads.CutAdsController;
+import offlineads.EnterAdsController;
 import offlineads.JobSelectController;
-import offlineads.Model;
+import offlineads.PublicationSelectController;
 
 public class App extends Application {
 
 	private Model model;
 	private Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-	private String strTitle = "Digital and Printed Ads Capture Tool (DaPact)";
+	private String strTitle = "Digital and Printed Ads Capture Tool";
 	private Stage primaryStage;
 	private Scene jobSelectScene;
-	private Scene PublicationSelectScene; 
+	private Scene PublicationSelectScene;
 	private Scene[] cutAdsScenes;
+	private Scene enterAdsScene;
 	private JobSelectController jobSelectController;
 	private PublicationSelectController PublicationSelectController;
 	private CutAdsController[] cutAdsControllers;
-	
-	private Scene testScene;
-	
+	private EnterAdsController enterAdsController;
+		
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -58,9 +53,7 @@ public class App extends Application {
 			createCutAdsScenes();
 			
 			createPublicationSelectScene();
-			
-			createTestScene();
-			
+						
 			primaryStage.setTitle(strTitle);
 			primaryStage.setWidth(primaryScreenBounds.getWidth());
 			primaryStage.setHeight(primaryScreenBounds.getHeight());
@@ -76,7 +69,7 @@ public class App extends Application {
 		this.jobSelectController = (JobSelectController) jobSelectFXMLLoader.getController();
 		jobSelectController.setTxtTitleText(strTitle);
 		jobSelectController.setApp(this);
-		jobSelectScene = new Scene(jobSelectPane);
+		jobSelectScene = new Scene(jobSelectPane, 1280, 720);
 	}
 	
 	public void createPublicationSelectScene() throws IOException {
@@ -84,6 +77,8 @@ public class App extends Application {
 		Parent publicationSelectPane = publicationSelectFXMLLoader.load();
 		this.PublicationSelectController = (PublicationSelectController) publicationSelectFXMLLoader.getController();
 		PublicationSelectController.setApp(this);
+		PublicationSelectController.getSPPubScroller().setMinWidth(primaryScreenBounds.getWidth());
+		PublicationSelectController.populatePubInfo();
 		PublicationSelectScene = new Scene(publicationSelectPane);
 		PublicationSelectController.createPublicationPreviews();
 	}
@@ -91,39 +86,30 @@ public class App extends Application {
 	public void createCutAdsScenes() throws IOException {
 		cutAdsScenes = new Scene[model.getFilesNewPubs().length];
 		cutAdsControllers = new CutAdsController[model.getFilesNewPubs().length];
-		for (int i = 0; i < cutAdsScenes.length - 1; i++) {
+		for (int i = 0; i < cutAdsScenes.length; i++) {
 			if (cutAdsScenes[i] == null) {
 				FXMLLoader cutAdsFXMLLoader = new FXMLLoader(getClass().getResource("/guijavafx/cut_ads_pane.fxml"));
 				Parent cutAdsPane = cutAdsFXMLLoader.load();
 				this.cutAdsControllers[i] = (CutAdsController) cutAdsFXMLLoader.getController();
-				cutAdsScenes[i] = new Scene(cutAdsPane);
+				cutAdsScenes[i] = new Scene(cutAdsPane, 1280, 720);
 				cutAdsControllers[i].setCutAdsScenesID(i);
 				cutAdsControllers[i].setApp(this);
 				cutAdsControllers[i].createPagePreviews();
+				cutAdsControllers[i].setCenterPage(0);
 			}
 		}
 	}
 	
-	public void createTestScene() {
-		BorderPane bp = new BorderPane();
-		GridPane gp = new GridPane();
-		ScrollPane sPane = new ScrollPane();
-		sPane.setFitToHeight(true);
-		BorderPane bPane = new BorderPane();
-		int i = 1;
-		for (File imageFile : model.getFilesNewAdsImages()) {
-			ImageView imgVw = new ImageView(new Image("file:" + model.getFilesNewAdsImages()[i-1].toString()));
-			imgVw.setPreserveRatio(true);
-			imgVw.setFitWidth(480);
-			gp.add(imgVw, i, 1);
-			i++;
-		}
-		bPane.setCenter(gp);
-		sPane.setContent(bPane);
-		bp.setCenter(sPane);
-		this.testScene = new Scene(bp);
+	public void createEnterAdsScene() throws IOException {
+		FXMLLoader enterAdsFXMLLoader = new FXMLLoader(getClass().getResource("/guijavafx/enter_ads_pane.fxml"));
+		Parent enterAdsPane = enterAdsFXMLLoader.load();
+		this.enterAdsController = (EnterAdsController) enterAdsFXMLLoader.getController();
+		enterAdsScene = new Scene(enterAdsPane, 1280, 720);
+		enterAdsController.setApp(this);
+		enterAdsController.createAdPreviews();
+		enterAdsController.setCenterAd(0);
 	}
-	
+
 	/**
 	 * Confirms whether the user wishes to quit and safely exits JavaFX framework
 	 * ending the execution of the Application's launch method.
@@ -145,6 +131,10 @@ public class App extends Application {
 	
 	public Model getModel() {
 		return model;
+	}
+	
+	public Rectangle2D getPrimaryScreenBounds() {
+		return primaryScreenBounds;
 	}
 	
 	public Stage getPrimaryStage() {
@@ -175,8 +165,12 @@ public class App extends Application {
 		return cutAdsControllers;
 	}
 	
-	public Scene getTestScene() {
-		return testScene;
+	public Scene getEnterAdsScene() {
+		return enterAdsScene;
+	}
+	
+	public EnterAdsController getEnterAdsController() {
+		return enterAdsController;
 	}
 	
 }

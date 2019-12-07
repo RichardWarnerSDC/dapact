@@ -2,8 +2,10 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
@@ -12,59 +14,87 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import guijavafx.ImageViewPane?>
 
-<BorderPane fx:id="root" 
-    xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/11.0.1"
-    fx:controller="offlineads.PublicationSelectController"
-    styleClass="PublicationSelectPane">
+<BorderPane fx:id="root" styleClass="PublicationSelectPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="offlineads.PublicationSelectController">
 	    
-    <stylesheets>
-        <URL value="@PublicationSelectPane.css" />
-    </stylesheets>
-    
-    <top>
-        <GridPane BorderPane.alignment="CENTER">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-                <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Publication" GridPane.rowSpan="2">
-                        <font>
-                            <Font size="26.0" />
-                        </font>
-                    </Text>
-                </children>
-            <BorderPane.margin>
-                <Insets left="16.0" right="16.0" />
-                </BorderPane.margin>
-        </GridPane>
-    </top>
-    
-    <center>
+<stylesheets>
+   <URL value="@PublicationSelectPane.css" />
+</stylesheets>
 
-    </center>
+   <top>
+      <FlowPane hgap="0.0" orientation="HORIZONTAL" prefHeight="64.0" vgap="0.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Publication">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Text>
+         </children>
+         <BorderPane.margin>
+            <Insets left="0.0" right="0.0" />
+         </BorderPane.margin>
+      </FlowPane>
+   </top>
+   
+   <center>
+      <HBox fx:id="hBoxPubImages" alignment="CENTER" prefHeight="100.0" prefWidth="1920.0" spacing="16" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
+   </center>
 
-	<bottom>
-	    <FlowPane hgap="8.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="8.0" BorderPane.alignment="CENTER">
-	        <children>
-	            <Label text="Highlighted File: Metro" />
-	            <Label text="Origin: metro.co.uk" />
-	            <Label text="Publication: Metro" />
-	            <Label text="Location: London" />
-	            <Label text="Pages: 101" />
-	            <Label text="Tagged Ads: 0" />
-	            <Label text="Cut Ads: 0" />
-	        </children>
-	            <padding>
-	                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-	            </padding>
-	    </FlowPane>
-	</bottom>
+   <bottom>
+      <BorderPane>
         
+        <bottom>
+           <Button fx:id="btnBackButton" minHeight="64" minWidth="128" onAction="#btnBackButton_Click" text="Back" />
+        </bottom>
+         <center>
+            <GridPane hgap="16.0" maxWidth="960.0" BorderPane.alignment="TOP_LEFT">
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Selected File:" />
+                  <Label text="Name:" GridPane.rowIndex="1" />
+                  <Label text="Publisher:" GridPane.rowIndex="2" />
+                  <Label text="Language:" GridPane.rowIndex="3" />
+                  <Label text="Country:" GridPane.rowIndex="4" />
+                  <Label text="City:" GridPane.rowIndex="5" />
+                  <Label text="URL:" GridPane.rowIndex="6" />
+                  <Label text="Pages:" GridPane.columnIndex="2" />
+                  <Label text="Format:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label text="Is Alternate Format Available?:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label text="Published On:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Label text="Tagged Ads:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <Label text="Cut Ads:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <Label fx:id="lblSelectedFileOut" text="File" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="cbxName" editable="true" maxWidth="1920.0" prefWidth="150.0" promptText="Please Specify" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="cbxPublisher" editable="true" maxWidth="1920.0" prefWidth="150.0" promptText="Please Specify" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="cbxLanguage" editable="true" maxWidth="1920.0" prefWidth="150.0" promptText="Please Specify" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="cbxCountry" editable="true" maxWidth="1920.0" prefWidth="150.0" promptText="Please Specify" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ComboBox fx:id="cbxCity" editable="true" maxWidth="1920.0" prefWidth="150.0" promptText="Please Specify" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <TextField fx:id="txtFldUrl" promptText="http://example.com/paper.pdf" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <Label fx:id="lblPagesOut" text="0" GridPane.columnIndex="3" />
+                  <ComboBox fx:id="cbxFormat" editable="true" maxWidth="1920.0" prefWidth="150.0" promptText="Please Specify" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="cbxIsAlternateFormatAvailable" editable="true" maxWidth="1920.0" prefWidth="150.0" promptText="Please Specify" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Label fx:id="lblPublishedOnOut" text="Date" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <Label fx:id="lblTaggedAdsOut" text="0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                  <Label fx:id="lblCutAdsOut" text="0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+         </center>
+         
+    </BorderPane>
+</bottom>
+
 </BorderPane>

@@ -8,11 +8,6 @@ import org.junit.jupiter.api.Test;
 
 class FileHandlerTest {
 
-//	@Test
-//	void test() {
-//		fail("Not yet implemented");
-//	}
-
     @Test
     public void FilesWithMatchingExtensionShouldReturnTrue() {
         assertEquals(true, FileHandler.hasValidExtension(new File("test.pdf"), "pdf"));

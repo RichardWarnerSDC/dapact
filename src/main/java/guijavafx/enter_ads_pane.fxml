@@ -16,11 +16,11 @@
 
 <BorderPane fx:id="root" 
     xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-    fx:controller="offlineads.CutAdsController"
-    styleClass="CutAdsPane">
+    fx:controller="offlineads.EnterAdsController"
+    styleClass="EnterAdsPane">
 	    
     <stylesheets>
-        <URL value="@CutAdsPane.css" />
+        <URL value="@EnterAdsPane.css" />
     </stylesheets>
     
     <top>

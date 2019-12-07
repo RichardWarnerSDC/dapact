@@ -9,6 +9,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 
+import javax.imageio.ImageIO;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -16,6 +18,7 @@ import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -30,14 +33,6 @@ public class PDFHandler {
 	private static final int KINDAHALF1080_DPI = 60;
 	private static final int KINDA1080_DPI = 120;
 	private static final float METRO_DPI = 250.339738f; // Give or take
-	
-	/**
-	 * TEST
-	 * @param args
-	 */
-	public static void main(String[] args) {
-//		convertDocPagesToJPEG(0);
-	}
 		
 	public static void convertDocPagesToJPEG(File pdfFile, File processedPubsDir) {
 		String outputDirString = processedPubsDir + "/" + pdfFile.getName();
@@ -63,6 +58,25 @@ public class PDFHandler {
 				closePDF();
 			}
 		}
+	}
+	
+	public static void writeFXImageToFile(Image image, File file) {
+		BufferedImage outBI = SwingFXUtils.fromFXImage(image, null);
+		try {
+			ImageIO.write(outBI, "jpeg", file);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static BufferedImage imageFileToBufferedImage(File imgFile) {
+		BufferedImage bi = null;
+		try {
+			bi = ImageIO.read(new File(imgFile.toString()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return bi;
 	}
 	
 	/**
@@ -162,6 +176,7 @@ public class PDFHandler {
 	            }
 	        }
 	    }
+	    
 	    return wr;
 	}
 

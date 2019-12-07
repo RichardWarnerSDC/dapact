@@ -1,6 +1,8 @@
 package offlineads;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class FileHandler {
 	
@@ -27,7 +29,7 @@ public class FileHandler {
 			file.mkdir();
 			System.out.println("Created directory: " + file.toString());
 		} catch (SecurityException e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -53,6 +55,25 @@ public class FileHandler {
 			System.out.println("Requires security protocol.");
 		}
 		return dirNameString;
+	}
+	
+	public static void saveTextToFile(String text, File outputDirectory, String filename) {
+		if (!outputDirectory.exists()) {outputDirectory.mkdir();}
+		File outputFile = new File(outputDirectory.toString() + "/" + filename + ".txt");
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(outputFile);
+			fw.write(text);
+			System.out.println("Exported file to " + outputFile.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
