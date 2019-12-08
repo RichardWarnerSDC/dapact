@@ -3,7 +3,7 @@ package guijavafx;
 import java.io.File;
 import java.util.ArrayList;
 
-import javafx.geometry.Bounds;
+import guijavafx.controllers.Controller;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -18,9 +18,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import offlineads.Controller;
-import offlineads.CutAdsController;
-import offlineads.EnterAdsController;
 import offlineads.MyMath;
 
 public class ZoomerPane extends ScrollPane {

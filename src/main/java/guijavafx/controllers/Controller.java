@@ -1,4 +1,4 @@
-package offlineads;
+package guijavafx.controllers;
 
 import java.util.ArrayList;
 

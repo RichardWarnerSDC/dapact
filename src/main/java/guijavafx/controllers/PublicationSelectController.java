@@ -1,4 +1,4 @@
-package offlineads;
+package guijavafx.controllers;
 
 import java.io.File;
 import java.net.URL;

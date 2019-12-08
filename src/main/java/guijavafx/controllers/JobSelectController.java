@@ -1,4 +1,4 @@
-package offlineads;
+package guijavafx.controllers;
 
 import java.io.IOException;
 import java.net.URL;
@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.text.Text;
 
-public class JobSelectController extends Controller implements Initializable {
+public class JobSelectController implements Initializable {
 	
 	private boolean isCreated;
 	@FXML private Text txtTitleText;

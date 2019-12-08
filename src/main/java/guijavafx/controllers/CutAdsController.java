@@ -1,4 +1,4 @@
-package offlineads;
+package guijavafx.controllers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -29,6 +29,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import offlineads.FileHandler;
+import offlineads.ImageProcessor;
+import offlineads.PDFHandler;
 
 public class CutAdsController extends Controller implements Initializable {
 	

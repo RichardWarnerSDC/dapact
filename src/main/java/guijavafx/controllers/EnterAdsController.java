@@ -1,4 +1,4 @@
-package offlineads;
+package guijavafx.controllers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,6 +35,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import offlineads.FileHandler;
+import offlineads.ImageProcessor;
+import offlineads.PDFHandler;
+import offlineads.TextProcessor;
 
 public class EnterAdsController extends Controller implements Initializable {
 	
@@ -169,7 +173,7 @@ public class EnterAdsController extends Controller implements Initializable {
 	
 	public void btnCutSelectedAds_Click() {
 		zoomerPane.normaliseSelections();
-		// do ocr on scratch
+		// do ocr on scratch files
 		StringBuilder sb = new StringBuilder();
 		for (File snippet : app.getModel().getDirScratch().listFiles()) {
 			sb.append(TextProcessor.doTess4JOCR(snippet) + "\n\n");

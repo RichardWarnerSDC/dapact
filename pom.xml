@@ -37,11 +37,6 @@
   	</dependency>
   	<dependency>
   		<groupId>org.openjfx</groupId>
-  		<artifactId>javafx-base</artifactId>
-  		<version>11.0.2</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.openjfx</groupId>
   		<artifactId>javafx-controls</artifactId>
   		<version>11.0.2</version>
   	</dependency>
@@ -69,6 +64,21 @@
   		<groupId>org.openjfx</groupId>
   		<artifactId>javafx-web</artifactId>
   		<version>11.0.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.testfx</groupId>
+  		<artifactId>testfx-core</artifactId>
+  		<version>4.0.16-alpha</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.testfx</groupId>
+  		<artifactId>testfx-junit5</artifactId>
+  		<version>4.0.16-alpha</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.junit.jupiter</groupId>
+  		<artifactId>junit-jupiter-engine</artifactId>
+  		<version>5.5.2</version>
   	</dependency>
   </dependencies>
   
