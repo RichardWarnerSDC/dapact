@@ -16,9 +16,8 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="root"
-    styleClass="PublicationSelectPane"
     xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="guijavafx.controllers..PublicationSelectController"
+    fx:controller="guijavafx.controllers.PublicationSelectController"
     styleClass="/guijavafx/fxml/PublicationSelectPane"
     stylesheets="/guijavafx/css/PublicationSelectPane.css">
 
