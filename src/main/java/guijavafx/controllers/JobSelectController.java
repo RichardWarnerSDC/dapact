@@ -9,24 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.text.Text;
 
-public class JobSelectController implements Initializable {
-	
-	private boolean isCreated;
-	@FXML private Text txtTitleText;
-	App app;
-	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+public class JobSelectController extends Controller {
 		
-	}
-	
-	/**
-	 * Notify observers that creation is finished.
-	 */
-	public void onCreated() {
-		isCreated = true;
-	}
-	
 	@FXML protected void btnCutAdsButton_Click() {
 		app.getPrimaryStage().setScene(app.getPublicationSelectScene());
 	}
@@ -42,18 +26,6 @@ public class JobSelectController implements Initializable {
 	
 	@FXML protected void btnEditAdsButton_Click() {
 		app.getPrimaryStage().setScene(app.getJobSelectScene());
-	}
-	
-	public boolean getIsCreated() {
-		return isCreated;
-	}
-	
-	public void setTxtTitleText(String newText) {
-		this.txtTitleText.setText(newText);
-	}
-	
-	public void setApp(App app) {
-		this.app = app;
 	}
 	
 }

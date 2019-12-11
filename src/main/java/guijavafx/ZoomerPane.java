@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import guijavafx.controllers.Controller;
+import guijavafx.controllers.ImageExtractController;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -22,7 +23,7 @@ import offlineads.MyMath;
 
 public class ZoomerPane extends ScrollPane {
 	
-	Controller controller;
+	ImageExtractController controller;
 	int currentRectSelect;
     double imgHeight;
     double imgWidth;
@@ -59,8 +60,7 @@ public class ZoomerPane extends ScrollPane {
      * @param pageImage
      * @param primaryScreenBounds
      */
-    
-    public ZoomerPane(Controller controller, int cutAdsScenesID, File imageFile , Rectangle2D primaryScreenBounds) {
+    public ZoomerPane(ImageExtractController controller, File imageFile , Rectangle2D primaryScreenBounds) {
     	this.controller = controller;
     	
     	// The content pane will hold the Image View and user generated Rectangle rectSelect
@@ -136,7 +136,7 @@ public class ZoomerPane extends ScrollPane {
                 imgView.setFitWidth(imgWidth * zoomMultiplier);
                 imgView.setFitHeight(imgHeight * zoomMultiplier);
                 
-                for (int i = 0; i < selections.size(); i++) {
+                for (int i = 0; i <= selections.size() - 1; i++) {
                 	Rectangle selection = selections.get(i);
 	                
                 	selection = MyMath.scaleRectangleCenterRespecitingC(selection, rootCenterPoint, oldScaleMultiplier, zoomMultiplier);

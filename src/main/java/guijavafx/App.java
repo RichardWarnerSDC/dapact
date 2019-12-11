@@ -23,7 +23,7 @@ import javafx.stage.WindowEvent;
 
 public class App extends Application {
 
-	private Model model;
+	private Model model = new Model();
 	private Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 	private String strTitle = "Digital and Printed Ads Capture Tool";
 	private Stage primaryStage;
@@ -36,14 +36,16 @@ public class App extends Application {
 	private CutAdsController[] cutAdsControllers;
 	private EnterAdsController enterAdsController;
 	private File dirFxmlFilesDirectory = new File("/guijavafx/fxml");
-		
+	double primaryScreenWidth = primaryScreenBounds.getWidth();
+	double primaryScreenHeight = primaryScreenBounds.getHeight();
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
 	@Override
 	public void init() {
-		this.model = new Model();
+		
 	}
 	
 	@Override
@@ -57,8 +59,8 @@ public class App extends Application {
 			createPublicationSelectScene();
 						
 			primaryStage.setTitle(strTitle);
-			primaryStage.setWidth(primaryScreenBounds.getWidth());
-			primaryStage.setHeight(primaryScreenBounds.getHeight());
+			primaryStage.setWidth(primaryScreenWidth);
+			primaryStage.setHeight(primaryScreenHeight);
 			primaryStage.setMaximized(true);
 			primaryStage.setOnCloseRequest(e -> btnClose_Click(e));
 			primaryStage.setScene(jobSelectScene);
@@ -68,21 +70,25 @@ public class App extends Application {
 	public void createJobSelectScene() throws IOException {		
 		FXMLLoader jobSelectFXMLLoader = new FXMLLoader(getClass().getResource(dirFxmlFilesDirectory + "/job_select_pane.fxml"));
 		Parent jobSelectPane = jobSelectFXMLLoader.load();
-		this.jobSelectController = (JobSelectController) jobSelectFXMLLoader.getController();
-		jobSelectController.setTxtTitleText(strTitle);
+		this.jobSelectController = (JobSelectController) jobSelectFXMLLoader.getController();		
+		
+		jobSelectController.setTitleText(strTitle);
 		jobSelectController.setApp(this);
-		jobSelectScene = new Scene(jobSelectPane, 1280, 720);
+		
+		jobSelectScene = new Scene(jobSelectPane, primaryScreenWidth, primaryScreenHeight);
 	}
 	
 	public void createPublicationSelectScene() throws IOException {
 		FXMLLoader publicationSelectFXMLLoader = new FXMLLoader(getClass().getResource(dirFxmlFilesDirectory + "/publication_select_pane.fxml"));
 		Parent publicationSelectPane = publicationSelectFXMLLoader.load();
 		this.PublicationSelectController = (PublicationSelectController) publicationSelectFXMLLoader.getController();
+		
 		PublicationSelectController.setApp(this);
-		PublicationSelectController.getSPPubScroller().setMinWidth(primaryScreenBounds.getWidth());
+		PublicationSelectController.getSPPubScroller().setMinWidth(primaryScreenWidth);
 		PublicationSelectController.populatePubInfo();
-		PublicationSelectScene = new Scene(publicationSelectPane);
 		PublicationSelectController.createPublicationPreviews();
+		
+		PublicationSelectScene = new Scene(publicationSelectPane, primaryScreenWidth, primaryScreenHeight);
 	}
 	
 	public void createCutAdsScenes() throws IOException {
@@ -93,11 +99,10 @@ public class App extends Application {
 				FXMLLoader cutAdsFXMLLoader = new FXMLLoader(getClass().getResource(dirFxmlFilesDirectory + "/cut_ads_pane.fxml"));
 				Parent cutAdsPane = cutAdsFXMLLoader.load();
 				this.cutAdsControllers[i] = (CutAdsController) cutAdsFXMLLoader.getController();
-				cutAdsScenes[i] = new Scene(cutAdsPane, 1280, 720);
-				cutAdsControllers[i].setCutAdsScenesID(i);
-				cutAdsControllers[i].setApp(this);
-				cutAdsControllers[i].createPagePreviews();
-				cutAdsControllers[i].setCenterPage(0);
+				
+				cutAdsControllers[i].onCreated(this, i);
+				
+				cutAdsScenes[i] = new Scene(cutAdsPane, primaryScreenWidth, primaryScreenHeight);
 			}
 		}
 	}
@@ -106,10 +111,10 @@ public class App extends Application {
 		FXMLLoader enterAdsFXMLLoader = new FXMLLoader(getClass().getResource(dirFxmlFilesDirectory + "/enter_ads_pane.fxml"));
 		Parent enterAdsPane = enterAdsFXMLLoader.load();
 		this.enterAdsController = (EnterAdsController) enterAdsFXMLLoader.getController();
-		enterAdsScene = new Scene(enterAdsPane, 1280, 720);
-		enterAdsController.setApp(this);
-		enterAdsController.createAdPreviews();
-		enterAdsController.setCenterAd(0);
+		
+		enterAdsController.onCreated(this);
+		
+		enterAdsScene = new Scene(enterAdsPane, primaryScreenWidth, primaryScreenHeight);
 	}
 
 	/**

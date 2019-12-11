@@ -25,7 +25,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 
-public class PublicationSelectController extends Controller implements Initializable {
+public class PublicationSelectController extends Controller {
 		
 	FlowPane flow;
 	private int currentlySelectedPublication = 0;
@@ -34,10 +34,8 @@ public class PublicationSelectController extends Controller implements Initializ
 	@FXML Button btnBackButton;
 	private ScrollPane spPubScroller;
 	@FXML private HBox hBoxPubImages;
-	private boolean isCreated;
 	private ObservableList<ImageView> olPubImages = FXCollections.observableArrayList();
 	ColorAdjust grayscale = new ColorAdjust();
-	private App app;
 	
 	@FXML private Label lblSelectedFileOut;
 	@FXML private ComboBox<String> cbxName;
@@ -121,13 +119,6 @@ public class PublicationSelectController extends Controller implements Initializ
 		root.setCenter(spPubScroller);
 	}
 	
-	/**
-	 * Notify observers that creation is finished.
-	 */
-	public void onCreated() {
-		isCreated = true;
-	}
-	
 	public void imgVwPubImage_Clicked(MouseEvent e, int i) {
 		if (e.getClickCount() == 2) {
 			// double clicked
@@ -149,14 +140,6 @@ public class PublicationSelectController extends Controller implements Initializ
 	
 	public BorderPane getRoot() {
 		return root;
-	}
-	
-	public void setApp(App app) {
-		this.app = app;
-	}
-	
-	public boolean getIsCreated() {
-		return isCreated;
 	}
 	
 	public ScrollPane getSPPubScroller() {

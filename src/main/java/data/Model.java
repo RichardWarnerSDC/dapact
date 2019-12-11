@@ -33,13 +33,20 @@ public class Model {
 	}
 	
 	public Model() {
+		wipeScratch(); // in case application was force-quitted
 		initialiseResources();
 		convertPdfs();
 		populatePubsData();
 	}
 	
-		/**
-		 * If folders don't exist, create them, e.g. first run
+	public void wipeScratch() {
+		for (File scratchFile : dirScratch.listFiles()) {
+			scratchFile.delete();
+		}
+	}
+	
+	/**
+	 * If folders don't exist, create them, e.g. first run
 	 */
 	public void initialiseResources() {
 		if (!resources.exists()) {new File("resources").mkdir();}

@@ -40,48 +40,18 @@ import offlineads.ImageProcessor;
 import offlineads.PDFHandler;
 import offlineads.TextProcessor;
 
-public class EnterAdsController extends Controller implements Initializable {
+public class EnterAdsController extends ImageExtractController {
 	
-	private boolean isCreated;
-	private int cutAdsSceneID;
-	@FXML private BorderPane root;
-	BorderPane leftBorderPane;
-	BorderPane rightBorderPane;
-	private ScrollPane spAdScroller;
-	private VBox vBoxAdImages;
-	private ObservableList<ImageView> oladImages = FXCollections.observableArrayList();
-	private int currentlySelectedAd;
-	private App app;
-	
-	File imageFile;
-	ZoomerPane zoomerPane;
+	private Button btnCutSelectedButton = new Button("Cut Selected");
 	
 	TextField txtFldHeadline;
 	TextArea txtAreaAdText;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		// left bar
-		
-		leftBorderPane = new BorderPane();
-		
-		Text title = new Text("Enter Ads");
-		leftBorderPane.setTop(title);
-		
-		spAdScroller = new ScrollPane();
-		spAdScroller.setFitToHeight(true);
-		spAdScroller.setHbarPolicy(ScrollBarPolicy.NEVER);
-		spAdScroller.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-		vBoxAdImages = new VBox(16);
-	    vBoxAdImages.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
-		vBoxAdImages.setAlignment(Pos.CENTER);
-				
-		Button btnBackButton = new Button("Back");
-		btnBackButton.setMinSize(128, 64);
+		super.initialize(location, resources);				
+		txtTitleText.setText("Enter Ads");
 		btnBackButton.setOnAction(e -> btnBackButton_Click());
-		
-		leftBorderPane.setBottom(btnBackButton);
 		
 		// right bar
 		
@@ -108,70 +78,26 @@ public class EnterAdsController extends Controller implements Initializable {
 
 		Button btnCutSelectedAdsButton = new Button("Enter Current Ad");
 		btnCutSelectedAdsButton.setMinSize(128, 64);
-		btnCutSelectedAdsButton.setOnAction(e -> btnCutSelectedAds_Click());
+		btnCutSelectedAdsButton.setOnAction(e -> btnCutSelected_Click());
 		
 		rightBorderPane.setBottom(btnCutSelectedAdsButton);
 		
 		root.setRight(rightBorderPane);
 	}
 	
-	public void createAdPreviews() {
-		File[] ads = app.getModel().getFilesNewAdsImages();
-		for (int i = 0; i < ads.length - 1; i++) {
-			int imgVwAdImageNum = i;
-			ImageView imgVwAdImage = new ImageView(new Image("file:" + ads[i].toString(), 128, 128, true, false));
-			imgVwAdImage.setOnMouseClicked(e -> imgVwadImage_Clicked(e, imgVwAdImageNum));
-			oladImages.add(imgVwAdImage);
-			vBoxAdImages.getChildren().add(imgVwAdImage);
-			imgVwAdImage = new ImageView();
-		}
-		spAdScroller.setContent(vBoxAdImages);
-		leftBorderPane.setCenter(spAdScroller);
-		root.setLeft(leftBorderPane);
-	}
-	
-	public void setCenterAd(int adNum) {
-		imageFile = app.getModel().getFilesNewAdsImages()[adNum];
-		zoomerPane = new ZoomerPane(this, cutAdsSceneID, imageFile, app.getPrimaryScreenBounds());
-		root.setCenter(zoomerPane);
-	}
-	
-	/**
-	 * Notify observers that creation is finished.
-	 */
-	public void onCreated() {
-		isCreated = true;
-	}
-	
-	public void setCutAdsScenesID(int id) {
-		this.cutAdsSceneID = id;
-	}
-	
-	public BorderPane getRoot() {
-		return root;
-	}
-	
-	public boolean getIsCreated() {
-		return isCreated;
-	}
-	
-	public void setApp(App app) {
-		this.app = app;
-	}
-	
-	public void imgVwadImage_Clicked(MouseEvent e, int adNum) {
-		currentlySelectedAd = adNum;
-		setCenterAd(adNum);
+	public void onCreated(App app) {
+		setApp(app);
+		File[] imageFiles = app.getModel().getDirNewAdsImages().listFiles();
+		createImagePreviews(imageFiles);
+		setCenterImage(imageFiles[0]);
 	}
 	
 	@FXML protected void btnBackButton_Click() {
+		app.getModel().wipeScratch();
 		app.getPrimaryStage().setScene(app.getJobSelectScene());
-		for (File scratchFile : app.getModel().getDirScratch().listFiles()) {
-			scratchFile.delete();
-		}
 	}
 	
-	public void btnCutSelectedAds_Click() {
+	public void btnCutSelected_Click() {
 		zoomerPane.normaliseSelections();
 		// do ocr on scratch files
 		StringBuilder sb = new StringBuilder();
@@ -183,10 +109,10 @@ public class EnterAdsController extends Controller implements Initializable {
 	
 	public void setSelections(ArrayList<Rectangle> selections) {
 		for (Rectangle selection: selections) {
-			File imageFile = app.getModel().getFilesNewAdsImages()[currentlySelectedAd];
+			File imageFile = app.getModel().getFilesNewAdsImages()[currentlySelectedImgVw];
 			System.out.println(imageFile.toString());
 			BufferedImage bi = PDFHandler.imageFileToBufferedImage(imageFile);
-			String[] outDirStrings = {app.getModel().getDirScratch().toString(), app.getModel().getFilesNewAdsImages()[currentlySelectedAd].getName()};
+			String[] outDirStrings = {app.getModel().getDirScratch().toString(), app.getModel().getFilesNewAdsImages()[currentlySelectedImgVw].getName()};
 			File outFile = new File(FileHandler.makeDirFromStrings(outDirStrings) + UUID.randomUUID());
 			ImageProcessor.writeSubImage(bi, selection.getBoundsInLocal(), "jpeg", outFile);
 		}

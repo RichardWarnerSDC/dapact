@@ -11,6 +11,8 @@ import guijavafx.App;
 import guijavafx.ZoomerPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -33,122 +35,54 @@ import offlineads.FileHandler;
 import offlineads.ImageProcessor;
 import offlineads.PDFHandler;
 
-public class CutAdsController extends Controller implements Initializable {
+public class CutAdsController extends ImageExtractController {
 	
-	private boolean isCreated;
 	private int cutAdsSceneID;
-	@FXML private BorderPane root;
-	BorderPane leftBorderPane;
-	BorderPane rightBorderPane;
-	private ScrollPane spPageScroller;
-	private VBox vBoxPageImages;
-	private ObservableList<ImageView> olPageImages = FXCollections.observableArrayList();
-	private int currentlySelectedPage;
-	private App app;
-	
-	File imageFile;
-	ZoomerPane zoomerPane;
+	private Button btnCutSelectedButton = new Button("Cut Selected");
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		// left bar
-		
-		leftBorderPane = new BorderPane();
-		
-		Text title = new Text("Cut Ads");
-		leftBorderPane.setTop(title);
-		
-		spPageScroller = new ScrollPane();
-		spPageScroller.setFitToHeight(true);
-		spPageScroller.setHbarPolicy(ScrollBarPolicy.NEVER);
-		spPageScroller.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-		vBoxPageImages = new VBox(16);
-	    vBoxPageImages.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
-		vBoxPageImages.setAlignment(Pos.CENTER);
-				
-		Button btnBackButton = new Button("Back");
-		btnBackButton.setMinSize(128, 64);
+		super.initialize(location, resources);
+		txtTitleText.setText("Cut Ads");
 		btnBackButton.setOnAction(e -> btnBackButton_Click());
-		
-		leftBorderPane.setBottom(btnBackButton);
 		
 		// right bar
 		
 		rightBorderPane = new BorderPane();
 		
-		Button btnCutSelectedAdsButton = new Button("Cut Selected Ads");
-		btnCutSelectedAdsButton.setMinSize(128, 64);
-		btnCutSelectedAdsButton.setOnAction(e -> btnCutSelectedAds_Click());
+		btnCutSelectedButton.setMinSize(128, 64);
+		btnCutSelectedButton.setOnAction(e -> btnCutSelected_Click());
 		
-		rightBorderPane.setBottom(btnCutSelectedAdsButton);
+		rightBorderPane.setBottom(btnCutSelectedButton);
 		
 		root.setRight(rightBorderPane);
 	}
 	
-	public void createPagePreviews() {
-		File[] pages = app.getModel().getFilesNewPubsImages()[cutAdsSceneID].listFiles();
-		for (int i = 0; i < pages.length - 1; i++) {
-			int imgVwPageImageNum = i;
-			ImageView imgVwPageImage = new ImageView(new Image("file:" + pages[i].toString(), 128, 128, true, false));
-			imgVwPageImage.setOnMouseClicked(e -> imgVwPageImage_Clicked(e, imgVwPageImageNum));
-			olPageImages.add(imgVwPageImage);
-			vBoxPageImages.getChildren().add(imgVwPageImage);
-			imgVwPageImage = new ImageView();
-		}
-		spPageScroller.setContent(vBoxPageImages);
-		leftBorderPane.setCenter(spPageScroller);
-		root.setLeft(leftBorderPane);
+	public void onCreated(App app, int cutAdsSceneID) {
+		setApp(app);
+		setCutAdsScenesID(cutAdsSceneID);
+		File[] imageFiles = app.getModel().getFilesNewPubsImages()[cutAdsSceneID].listFiles();
+		createImagePreviews(imageFiles);
+		setCenterImage(imageFiles[0]);
 	}
-	
-	public void setCenterPage(int pageNum) {
-		imageFile = app.getModel().getFilesNewPubsImages()[cutAdsSceneID].listFiles()[pageNum];
-		zoomerPane = new ZoomerPane(this, cutAdsSceneID, imageFile, app.getPrimaryScreenBounds());
-		root.setCenter(zoomerPane);
-	}
-	
-	/**
-	 * Notify observers that creation is finished.
-	 */
-	public void onCreated() {
-		isCreated = true;
-	}
-	
+		
 	public void setCutAdsScenesID(int id) {
 		this.cutAdsSceneID = id;
-	}
-	
-	public BorderPane getRoot() {
-		return root;
-	}
-	
-	public boolean getIsCreated() {
-		return isCreated;
-	}
-	
-	public void setApp(App app) {
-		this.app = app;
-	}
-	
-	public void imgVwPageImage_Clicked(MouseEvent e, int pageNum) {
-		currentlySelectedPage = pageNum;
-		setCenterPage(pageNum);
 	}
 	
 	@FXML protected void btnBackButton_Click() {
 		app.getPrimaryStage().setScene(app.getPublicationSelectScene());
 	}
 	
-	public void btnCutSelectedAds_Click() {
+	public void btnCutSelected_Click() {
 		zoomerPane.normaliseSelections();
 	}
 	
 	public void setSelections(ArrayList<Rectangle> selections) {
+		File srcFile = app.getModel().getFilesNewPubsImages()[cutAdsSceneID].listFiles()[currentlySelectedImgVw];
+		BufferedImage bi = PDFHandler.imageFileToBufferedImage(srcFile);
 		for (Rectangle selection: selections) {
-			File imageFile = app.getModel().getFilesNewPubsImages()[cutAdsSceneID].listFiles()[currentlySelectedPage];
-			System.out.println(imageFile.toString());
-			BufferedImage bi = PDFHandler.imageFileToBufferedImage(imageFile);
-			String[] outDirStrings = {app.getModel().getDirNewAdsImages().toString(), app.getModel().getFilesNewPubsImages()[cutAdsSceneID].listFiles()[currentlySelectedPage].getName()};
+			String[] outDirStrings = {app.getModel().getDirNewAdsImages().toString(), app.getModel().getFilesNewPubsImages()[cutAdsSceneID].listFiles()[currentlySelectedImgVw].getName()};
 			File outFile = new File(FileHandler.makeDirFromStrings(outDirStrings) + UUID.randomUUID());
 			ImageProcessor.writeSubImage(bi, selection.getBoundsInLocal(), "jpeg", outFile);
 		}
