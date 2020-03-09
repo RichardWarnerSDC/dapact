@@ -42,9 +42,9 @@ public class ZoomerPane extends ScrollPane {
     ArrayList<Rectangle> selections = new ArrayList<>();
     ArrayList<Double> selectionsScales = new ArrayList<>();
 
-    int zoomLvl = 3;
-    double zoomMin = 0.3;
-    double zoomMax = 1.5;
+    int zoomLvl = 10;
+    double zoomMin = 0.2;
+    double zoomMax = 8;
     double zoomMultiplier;
     
 	Pane pane;

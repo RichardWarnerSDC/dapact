@@ -33,8 +33,8 @@ public class Model {
 	}
 	
 	public Model() {
-		wipeScratch(); // in case application was force-quitted
 		initialiseResources();
+		wipeScratch(); // in case application was force-quitted
 		convertPdfs();
 		populatePubsData();
 	}
@@ -53,14 +53,17 @@ public class Model {
 		if (!dirNewPubs.exists()) {FileHandler.makeDirFromFile(dirNewPubs);}
 		if (!dirNewPubsImages.exists()) {FileHandler.makeDirFromFile(dirNewPubsImages);}
 		if (!dirNewAdsImages.exists()) {FileHandler.makeDirFromFile(dirNewAdsImages);}
+		if (!dirScratch.exists()) {FileHandler.makeDirFromFile(dirScratch);}
 	}
 	
 	/**
 	 * convert new PDF files to JPEGs and store in NewPublicationsImages directory.
 	 */
 	public void convertPdfs() {
-		for (File file : filesNewPubs) {
-			PDFHandler.convertDocPagesToJPEG(file, dirNewPubsImages);
+		if (filesNewPubs.length > 0) {
+			for (File file : filesNewPubs) {
+				PDFHandler.convertDocPagesToJPEG(file, dirNewPubsImages);
+			}
 		}
 	}
 	

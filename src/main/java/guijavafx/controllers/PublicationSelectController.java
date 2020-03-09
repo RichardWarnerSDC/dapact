@@ -65,43 +65,43 @@ public class PublicationSelectController extends Controller {
 	/**
 	 *  Populate pubInfo with the default selected publication
 	 */
-	public void populatePubInfo() {
-		
-		// populate choices
-		Publication currentPub = app.getModel().getPubsData()[0];
-		lblSelectedFileOut.setText(currentPub.getFileName());
-		if (!cbxName.getItems().contains(currentPub.getName())) {
-			cbxName.getItems().add(currentPub.getName());}
-		if (!cbxPublisher.getItems().contains(currentPub.getPublisher())) {
-			cbxPublisher.getItems().add(currentPub.getPublisher());}
-		if (!cbxLanguage.getItems().contains(currentPub.getLanguage())) {
-			cbxLanguage.getItems().add(currentPub.getLanguage());
-		}
-		
-		Location pubLocation = currentPub.getLocation();
-		if (!cbxCountry.getItems().contains(pubLocation.getCountry())) {
-			cbxCountry.getItems().add(pubLocation.getCountry());}
-		if (!cbxCity.getItems().contains(pubLocation.getCity())) {
-			cbxCity.getItems().add(pubLocation.getCity());}
-		
-		lblPagesOut.setText(Integer.toString(currentPub.getPages()));
-		if (!cbxFormat.getItems().contains(currentPub.getFormat())) {
-			cbxFormat.getItems().add(currentPub.getFormat());
-		}
-		if (!cbxIsAlternateFormatAvailable.getItems().contains(currentPub.getIsAlternativeFormatAvailable())) {
-			cbxIsAlternateFormatAvailable.getItems().add(currentPub.getIsAlternativeFormatAvailable());}
-		lblPublishedOnOut.setText(currentPub.getPublishedOn());
-		
-		// set default selected values
-		cbxName.setValue(cbxName.getItems().get(0));
-		cbxPublisher.setValue(cbxPublisher.getItems().get(0));
-		cbxLanguage.setValue(cbxLanguage.getItems().get(0));
-		cbxCountry.setValue(cbxCountry.getItems().get(0));
-		cbxCity.setValue(cbxCity.getItems().get(0));
-		cbxFormat.setValue(cbxFormat.getItems().get(0));
-		cbxIsAlternateFormatAvailable.setValue(cbxIsAlternateFormatAvailable.getItems().get(0));
-		
-	}
+//	public void populatePubInfo() {
+//		
+//		// populate choices
+//		Publication currentPub = app.getModel().getPubsData()[0];
+//		lblSelectedFileOut.setText(currentPub.getFileName());
+//		if (!cbxName.getItems().contains(currentPub.getName())) {
+//			cbxName.getItems().add(currentPub.getName());}
+//		if (!cbxPublisher.getItems().contains(currentPub.getPublisher())) {
+//			cbxPublisher.getItems().add(currentPub.getPublisher());}
+//		if (!cbxLanguage.getItems().contains(currentPub.getLanguage())) {
+//			cbxLanguage.getItems().add(currentPub.getLanguage());
+//		}
+//		
+//		Location pubLocation = currentPub.getLocation();
+//		if (!cbxCountry.getItems().contains(pubLocation.getCountry())) {
+//			cbxCountry.getItems().add(pubLocation.getCountry());}
+//		if (!cbxCity.getItems().contains(pubLocation.getCity())) {
+//			cbxCity.getItems().add(pubLocation.getCity());}
+//		
+//		lblPagesOut.setText(Integer.toString(currentPub.getPages()));
+//		if (!cbxFormat.getItems().contains(currentPub.getFormat())) {
+//			cbxFormat.getItems().add(currentPub.getFormat());
+//		}
+//		if (!cbxIsAlternateFormatAvailable.getItems().contains(currentPub.getIsAlternativeFormatAvailable())) {
+//			cbxIsAlternateFormatAvailable.getItems().add(currentPub.getIsAlternativeFormatAvailable());}
+//		lblPublishedOnOut.setText(currentPub.getPublishedOn());
+//		
+//		// set default selected values
+//		cbxName.setValue(cbxName.getItems().get(0));
+//		cbxPublisher.setValue(cbxPublisher.getItems().get(0));
+//		cbxLanguage.setValue(cbxLanguage.getItems().get(0));
+//		cbxCountry.setValue(cbxCountry.getItems().get(0));
+//		cbxCity.setValue(cbxCity.getItems().get(0));
+//		cbxFormat.setValue(cbxFormat.getItems().get(0));
+//		cbxIsAlternateFormatAvailable.setValue(cbxIsAlternateFormatAvailable.getItems().get(0));
+//		
+//	}
 	
 	public void createPublicationPreviews() {
 		File[] newPubsImages = app.getModel().getFilesNewPubsImages();

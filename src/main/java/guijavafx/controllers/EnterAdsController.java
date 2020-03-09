@@ -8,33 +8,18 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 import guijavafx.App;
-import guijavafx.ZoomerPane;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import offlineads.FileHandler;
 import offlineads.ImageProcessor;
 import offlineads.PDFHandler;
@@ -46,6 +31,7 @@ public class EnterAdsController extends ImageExtractController {
 	
 	TextField txtFldHeadline;
 	TextArea txtAreaAdText;
+	ComboBox<String> cbxOcrLanguage = new ComboBox<>();
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -76,11 +62,21 @@ public class EnterAdsController extends ImageExtractController {
 		
 		rightBorderPane.setCenter(rgp);
 
+		VBox rvb = new VBox(16);
+		
+		String[] ocrLanguages = TextProcessor.OCR_LANGUAGES;
+		for (String language : ocrLanguages) {
+			cbxOcrLanguage.getItems().add(language);
+		}
+		cbxOcrLanguage.getSelectionModel().select(0); //default to English
+		rvb.getChildren().add(cbxOcrLanguage);
+		
 		Button btnCutSelectedAdsButton = new Button("Enter Current Ad");
 		btnCutSelectedAdsButton.setMinSize(128, 64);
 		btnCutSelectedAdsButton.setOnAction(e -> btnCutSelected_Click());
+		rvb.getChildren().add(btnCutSelectedAdsButton);
 		
-		rightBorderPane.setBottom(btnCutSelectedAdsButton);
+		rightBorderPane.setBottom(rvb);
 		
 		root.setRight(rightBorderPane);
 	}
@@ -102,7 +98,7 @@ public class EnterAdsController extends ImageExtractController {
 		// do ocr on scratch files
 		StringBuilder sb = new StringBuilder();
 		for (File snippet : app.getModel().getDirScratch().listFiles()) {
-			sb.append(TextProcessor.doTess4JOCR(snippet) + "\n\n");
+			sb.append(TextProcessor.doTess4JOCR(snippet, cbxOcrLanguage.getSelectionModel().getSelectedItem()) + "\n");
 		}
 		txtAreaAdText.appendText(sb.toString());
 	}

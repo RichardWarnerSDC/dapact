@@ -21,9 +21,11 @@ import net.sourceforge.tess4j.TesseractException;
  */
 public class TextProcessor {
 	
-	public static String doTess4JOCR(File imageFile) {
+	public static final String[] OCR_LANGUAGES = {"eng", "deu"};
+	
+	public static String doTess4JOCR(File imageFile, String language) {
 		ITesseract instance = new Tesseract();
-		instance.setLanguage("eng");
+		instance.setLanguage(language);
 		instance.setDatapath("resources/tessdata");
 		
 		System.out.println("**************************************************");
@@ -105,8 +107,6 @@ public class TextProcessor {
 		
 		System.out.println("Textporcessor: compareOCRResults: postPrune: aList.size(): " + aList.size() + " bList.size(): " + bList.size());
 		System.out.println();
-
-		
 	}
-	
+		
 }

@@ -85,7 +85,7 @@ public class App extends Application {
 		
 		PublicationSelectController.setApp(this);
 		PublicationSelectController.getSPPubScroller().setMinWidth(primaryScreenWidth);
-		PublicationSelectController.populatePubInfo();
+//		PublicationSelectController.populatePubInfo();
 		PublicationSelectController.createPublicationPreviews();
 		
 		PublicationSelectScene = new Scene(publicationSelectPane, primaryScreenWidth, primaryScreenHeight);
@@ -94,7 +94,7 @@ public class App extends Application {
 	public void createCutAdsScenes() throws IOException {
 		cutAdsScenes = new Scene[model.getFilesNewPubs().length];
 		cutAdsControllers = new CutAdsController[model.getFilesNewPubs().length];
-		for (int i = 0; i < cutAdsScenes.length; i++) {
+		for (int i = 0; i <= cutAdsScenes.length - 1; i++) {
 			if (cutAdsScenes[i] == null) {
 				FXMLLoader cutAdsFXMLLoader = new FXMLLoader(getClass().getResource(dirFxmlFilesDirectory + "/cut_ads_pane.fxml"));
 				Parent cutAdsPane = cutAdsFXMLLoader.load();
