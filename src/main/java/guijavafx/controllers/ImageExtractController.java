@@ -1,11 +1,9 @@
 package guijavafx.controllers;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.UUID;
 
 import guijavafx.ZoomerPane;
 import javafx.collections.FXCollections;
@@ -26,10 +24,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import offlineads.FileHandler;
-import offlineads.ImageProcessor;
-import offlineads.PDFHandler;
 
 public class ImageExtractController extends Controller {
 

@@ -183,7 +183,7 @@ public class ZoomerPane extends ScrollPane {
 		double rootPaddingX = (rootWidth - imgWidth) / 2;
 		double rootPaddingY = (rootHeight - imgHeight) / 2;
 		
-		ArrayList<Rectangle> normalisedSelections = new ArrayList<>();;
+		ArrayList<Rectangle> normalisedSelections = new ArrayList<>();
 		for (int i = 0; i <= selections.size() - 1; i++) {
 			Rectangle normalisedSelection = new Rectangle();
 			normalisedSelection.setX(selections.get(i).getX());
